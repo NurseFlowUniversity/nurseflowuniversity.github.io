@@ -1,577 +1,664 @@
-// ====================================
+// ============================
 // ELEMENTOS
-// ====================================
+// ============================
 
-const semesterGrid =
-  document.getElementById("semesterGrid");
+const semesterGrid=document.getElementById("semesterGrid");
+const subjectsGrid=document.getElementById("subjectsGrid");
 
-const subjectsGrid =
-  document.getElementById("subjectsGrid");
+const addSemesterBtn=document.getElementById("addSemesterBtn");
+const addSubjectBtn=document.getElementById("addSubjectBtn");
 
-const addSemesterBtn =
-  document.getElementById("addSemesterBtn");
+const semesterTitle=document.getElementById("semesterTitle");
 
-const addSubjectBtn =
-  document.getElementById("addSubjectBtn");
+const graduationBar=document.getElementById("graduationBar");
+const graduationText=document.getElementById("graduationText");
 
-const semesterTitle =
-  document.getElementById("semesterTitle");
+const semesterBar=document.getElementById("semesterBar");
+const semesterText=document.getElementById("semesterText");
 
-const graduationBar =
-  document.getElementById("graduationBar");
+const startDateInput=document.getElementById("startDateInput");
+const endDateInput=document.getElementById("endDateInput");
 
-const graduationText =
-  document.getElementById("graduationText");
+const examList=document.getElementById("examList");
+const workList=document.getElementById("workList");
 
-const semesterBar =
-  document.getElementById("semesterBar");
-
-const semesterText =
-  document.getElementById("semesterText");
-
-const startDateInput =
-  document.getElementById("startDateInput");
-
-const endDateInput =
-  document.getElementById("endDateInput");
-
-const examList =
-  document.getElementById("examList");
-
-const workList =
-  document.getElementById("workList");
-
-const addExamBtn =
-  document.getElementById("addExamBtn");
-
-const addWorkBtn =
-  document.getElementById("addWorkBtn");
+const addExamBtn=document.getElementById("addExamBtn");
+const addWorkBtn=document.getElementById("addWorkBtn");
 
 
-// ====================================
+// ============================
 // DADOS
-// ====================================
+// ============================
 
-let semesters =
-  JSON.parse(
-    localStorage.getItem("nurseflow_semesters")
-  ) || [];
+let semesters=
+JSON.parse(
+localStorage.getItem(
+"nurseflow_semesters"
+)
+)||[];
 
-let currentSemester = 0;
+let currentSemester=0;
 
 
-// ====================================
+// ============================
 // SALVAR
-// ====================================
+// ============================
 
-function saveSemesters() {
+function save(){
 
-  localStorage.setItem(
-    "nurseflow_semesters",
-    JSON.stringify(semesters)
-  );
-
-}
-
-
-// ====================================
-// RENDER SEMESTRES
-// ====================================
-
-function renderSemesters() {
-
-  semesterGrid.innerHTML = "";
-
-  semesters.forEach((semester, index) => {
-
-    const wrapper =
-      document.createElement("div");
-
-    wrapper.classList.add("semester-wrapper");
-
-    const button =
-      document.createElement("button");
-
-    button.classList.add("semester-btn");
-
-    if (index === currentSemester) {
-      button.classList.add("active");
-    }
-
-    button.innerText =
-      semester.name;
-
-    button.addEventListener("click", () => {
-
-      currentSemester = index;
-
-      renderSemesters();
-
-      renderSubjects();
-
-      updateGraduation();
-
-    });
-
-    // BOTÃO REMOVER
-
-    const deleteBtn =
-      document.createElement("button");
-
-    deleteBtn.classList.add("delete-semester");
-
-    deleteBtn.innerText = "❌";
-
-    deleteBtn.addEventListener("click", () => {
-
-      const confirmDelete =
-        confirm(
-          `Remover ${semester.name}?`
-        );
-
-      if (!confirmDelete) {
-        return;
-      }
-
-      semesters.splice(index, 1);
-
-      if (
-        currentSemester >= semesters.length
-      ) {
-        currentSemester =
-          semesters.length - 1;
-      }
-
-      if (currentSemester < 0) {
-        currentSemester = 0;
-      }
-
-      saveSemesters();
-
-      renderSemesters();
-
-      renderSubjects();
-
-      updateGraduation();
-
-    });
-
-    wrapper.appendChild(button);
-
-    wrapper.appendChild(deleteBtn);
-
-    semesterGrid.appendChild(wrapper);
-
-  });
+localStorage.setItem(
+"nurseflow_semesters",
+JSON.stringify(semesters)
+);
 
 }
 
 
-// ====================================
-// RENDER DISCIPLINAS
-// ====================================
+// ============================
+// GARANTIR ESTRUTURA
+// ============================
 
-function renderSubjects() {
+function ensureSemesterData(){
 
-  subjectsGrid.innerHTML = "";
+if(!semesters[currentSemester])
+return;
 
-  if (!semesters[currentSemester]) {
+const s=
+semesters[currentSemester];
 
-    semesterTitle.innerText =
-      "Semestre Atual";
+if(!s.subjects)
+s.subjects=[];
 
-    return;
+if(!s.exams)
+s.exams=[];
 
-  }
+if(!s.works)
+s.works=[];
 
-  semesterTitle.innerText =
-    semesters[currentSemester].name;
+if(!s.startDate)
+s.startDate="";
 
-  semesters[currentSemester]
-    .subjects
-    .forEach((subject, subjectIndex) => {
-
-      const wrapper =
-        document.createElement("div");
-
-      wrapper.classList.add("subject-wrapper");
-
-      // CARD
-
-      const card =
-        document.createElement("a");
-
-      card.classList.add("subject-card");
-
-      card.href =
-        `materia.html?nome=${encodeURIComponent(subject)}`;
-
-      card.innerText = subject;
-
-      // REMOVER
-
-      const deleteBtn =
-        document.createElement("button");
-
-      deleteBtn.classList.add("delete-subject");
-
-      deleteBtn.innerText = "❌";
-
-      deleteBtn.addEventListener("click", () => {
-
-        const confirmDelete =
-          confirm(
-            `Remover ${subject}?`
-          );
-
-        if (!confirmDelete) {
-          return;
-        }
-
-        semesters[currentSemester]
-          .subjects
-          .splice(subjectIndex, 1);
-
-        saveSemesters();
-
-        renderSubjects();
-
-      });
-
-      wrapper.appendChild(card);
-
-      wrapper.appendChild(deleteBtn);
-
-      subjectsGrid.appendChild(wrapper);
-
-    });
+if(!s.endDate)
+s.endDate="";
 
 }
 
 
-// ====================================
-// ADICIONAR SEMESTRE
-// ====================================
+// ============================
+// SEMESTRES
+// ============================
 
-addSemesterBtn.addEventListener("click", () => {
+function renderSemesters(){
 
-  const semesterName =
-    prompt("Nome do semestre:");
+semesterGrid.innerHTML="";
 
-  if (!semesterName) {
-    return;
-  }
+semesters.forEach(
+(semester,index)=>{
 
-  semesters.push({
+const wrapper=
+document.createElement("div");
 
-    name: semesterName,
+wrapper.className=
+"semester-wrapper";
 
-    subjects: []
+const btn=
+document.createElement("button");
 
-  });
+btn.className=
+"semester-btn";
 
-  saveSemesters();
+if(index===currentSemester)
+btn.classList.add("active");
 
-  renderSemesters();
+btn.innerText=
+semester.name;
 
-  updateGraduation();
+btn.onclick=()=>{
 
-});
+currentSemester=index;
+
+renderAll();
+
+};
+
+const del=
+document.createElement("button");
+
+del.className=
+"delete-semester";
+
+del.innerText="❌";
+
+del.onclick=()=>{
+
+if(
+!confirm(
+`Remover ${semester.name}?`
+)
+)return;
+
+semesters.splice(
+index,
+1
+);
+
+if(
+currentSemester>=
+semesters.length
+){
+
+currentSemester=
+semesters.length-1;
+
+}
+
+if(currentSemester<0)
+currentSemester=0;
+
+save();
+
+renderAll();
+
+};
+
+wrapper.append(
+btn,
+del
+);
+
+semesterGrid.appendChild(
+wrapper
+);
+
+}
+
+);
+
+}
 
 
-// ====================================
-// ADICIONAR DISCIPLINA
-// ====================================
+// ============================
+// DISCIPLINAS
+// ============================
 
-addSubjectBtn.addEventListener("click", () => {
+function renderSubjects(){
 
-  if (!semesters[currentSemester]) {
+subjectsGrid.innerHTML="";
 
-    alert(
-      "Crie um semestre primeiro."
-    );
+if(!semesters[currentSemester]){
 
-    return;
+semesterTitle.innerText=
+"Semestre";
 
-  }
+return;
 
-  const subjectName =
-    prompt("Nome da disciplina:");
+}
 
-  if (!subjectName) {
-    return;
-  }
+ensureSemesterData();
 
-  semesters[currentSemester]
-    .subjects
-    .push(subjectName);
+const s=
+semesters[currentSemester];
 
-  saveSemesters();
+semesterTitle.innerText=
+s.name;
 
-  renderSubjects();
+s.subjects.forEach(
+(subject,index)=>{
 
-});
+const wrapper=
+document.createElement("div");
+
+wrapper.className=
+"subject-wrapper";
+
+const card=
+document.createElement("a");
+
+card.className=
+"subject-card";
+
+card.href=
+`materia.html?nome=${encodeURIComponent(subject)}`;
+
+card.innerText=
+subject;
+
+const del=
+document.createElement("button");
+
+del.className=
+"delete-subject";
+
+del.innerText="❌";
+
+del.onclick=()=>{
+
+s.subjects.splice(
+index,
+1
+);
+
+save();
+
+renderSubjects();
+
+};
+
+wrapper.append(
+card,
+del
+);
+
+subjectsGrid.appendChild(
+wrapper
+);
+
+}
+
+);
+
+}
 
 
-// ====================================
+// ============================
 // PROGRESSO GRADUAÇÃO
-// ====================================
+// ============================
 
-function updateGraduation() {
+function updateGraduation(){
 
-  if (semesters.length === 0) {
+if(
+semesters.length===0
+){
 
-    graduationBar.style.width = "0%";
+graduationBar.style.width=
+"0%";
 
-    graduationText.innerText = "0%";
+graduationText.innerText=
+"0%";
 
-    return;
+return;
 
-  }
+}
 
-  const progress =
-    Math.floor(
-      ((currentSemester + 1)
-      / semesters.length) * 100
-    );
+const progress=
+Math.floor(
 
-  graduationBar.style.width =
-    progress + "%";
+((currentSemester+1)
+/ semesters.length)
+*100
 
-  graduationText.innerText =
-    progress + "%";
+);
+
+graduationBar.style.width=
+progress+"%";
+
+graduationText.innerText=
+progress+"%";
 
 }
 
 
-// ====================================
-// PROGRESSO SEMESTRE
-// ====================================
+// ============================
+// SEMESTRE
+// ============================
 
-function updateSemesterProgress() {
+function updateSemesterProgress(){
 
-  if (
-    !startDateInput.value ||
-    !endDateInput.value
-  ) {
+if(!semesters[currentSemester])
+return;
 
-    semesterBar.style.width = "0%";
+ensureSemesterData();
 
-    semesterText.innerText = "0%";
+const s=
+semesters[currentSemester];
 
-    return;
+s.startDate=
+startDateInput.value;
 
-  }
+s.endDate=
+endDateInput.value;
 
-  const startDate =
-    new Date(startDateInput.value);
+save();
 
-  const endDate =
-    new Date(endDateInput.value);
+if(
+!s.startDate||
+!s.endDate
+){
 
-  const today =
-    new Date();
+semesterBar.style.width=
+"0%";
 
-  const totalTime =
-    endDate - startDate;
+semesterText.innerText=
+"0%";
 
-  const elapsedTime =
-    today - startDate;
+return;
 
-  let progress =
-    Math.floor(
-      (elapsedTime / totalTime) * 100
-    );
+}
 
-  if (progress < 0) {
-    progress = 0;
-  }
+const start=
+new Date(
+s.startDate
+);
 
-  if (progress > 100) {
-    progress = 100;
-  }
+const end=
+new Date(
+s.endDate
+);
 
-  semesterBar.style.width =
-    progress + "%";
+const now=
+new Date();
 
-  semesterText.innerText =
-    progress + "%";
+let progress=
+
+((now-start)
+/(end-start))
+*100;
+
+progress=
+Math.max(
+0,
+Math.min(
+100,
+Math.floor(progress)
+)
+);
+
+semesterBar.style.width=
+progress+"%";
+
+semesterText.innerText=
+progress+"%";
 
 }
 
 
-// ====================================
-// DATAS
-// ====================================
+// ============================
+// TAREFAS
+// ============================
+
+function renderTasks(){
+
+examList.innerHTML="";
+workList.innerHTML="";
+
+if(!semesters[currentSemester])
+return;
+
+ensureSemesterData();
+
+const s=
+semesters[currentSemester];
+
+startDateInput.value=
+s.startDate;
+
+endDateInput.value=
+s.endDate;
+
+s.exams.forEach(
+task=>
+createTask(
+examList,
+task,
+"exam"
+)
+);
+
+s.works.forEach(
+task=>
+createTask(
+workList,
+task,
+"work"
+)
+);
+
+}
+
+
+function createTask(
+container,
+task,
+type
+){
+
+const div=
+document.createElement("div");
+
+div.className=
+"task-item";
+
+div.innerHTML=
+
+`
+
+<div>
+
+<strong>
+
+${task.name}
+
+</strong>
+
+<p>
+
+📅 ${task.date}
+
+</p>
+
+</div>
+
+<button>
+
+❌
+
+</button>
+
+`;
+
+div.querySelector(
+"button"
+).onclick=()=>{
+
+const s=
+semesters[currentSemester];
+
+if(type==="exam"){
+
+s.exams=
+s.exams.filter(
+t=>t.id!==task.id
+);
+
+}else{
+
+s.works=
+s.works.filter(
+t=>t.id!==task.id
+);
+
+}
+
+save();
+
+renderTasks();
+
+};
+
+container.appendChild(
+div
+);
+
+}
+
+
+// ============================
+// ADICIONAR
+// ============================
+
+addSemesterBtn.onclick=()=>{
+
+const name=
+prompt(
+"Nome semestre:"
+);
+
+if(!name)
+return;
+
+semesters.push({
+
+name,
+
+subjects:[],
+
+exams:[],
+
+works:[],
+
+startDate:"",
+
+endDate:""
+
+});
+
+save();
+
+renderAll();
+
+};
+
+
+addSubjectBtn.onclick=()=>{
+
+if(!semesters[currentSemester]){
+
+alert(
+"Crie semestre"
+);
+
+return;
+
+}
+
+const name=
+prompt(
+"Nome disciplina:"
+);
+
+if(!name)
+return;
+
+semesters[currentSemester]
+.subjects
+.push(name);
+
+save();
+
+renderSubjects();
+
+};
+
+
+addExamBtn.onclick=()=>{
+
+const name=
+prompt(
+"Nome prova:"
+);
+
+const date=
+prompt(
+"Data:"
+);
+
+if(!name||!date)
+return;
+
+semesters[currentSemester]
+.exams
+.push({
+
+id:Date.now(),
+
+name,
+
+date
+
+});
+
+save();
+
+renderTasks();
+
+};
+
+
+addWorkBtn.onclick=()=>{
+
+const name=
+prompt(
+"Nome trabalho:"
+);
+
+const date=
+prompt(
+"Data:"
+);
+
+if(!name||!date)
+return;
+
+semesters[currentSemester]
+.works
+.push({
+
+id:Date.now(),
+
+name,
+
+date
+
+});
+
+save();
+
+renderTasks();
+
+};
+
+
+// ============================
+// EVENTOS
+// ============================
 
 startDateInput.addEventListener(
-  "change",
-  updateSemesterProgress
+"change",
+updateSemesterProgress
 );
 
 endDateInput.addEventListener(
-  "change",
-  updateSemesterProgress
+"change",
+updateSemesterProgress
 );
 
 
-// ====================================
-// ORDENAR DATAS
-// ====================================
+// ============================
+// RENDER GERAL
+// ============================
 
-function sortByDate(container) {
-
-  const items =
-    Array.from(container.children);
-
-  items.sort((a, b) => {
-
-    const dateA =
-      convertDate(a.dataset.date);
-
-    const dateB =
-      convertDate(b.dataset.date);
-
-    return dateA - dateB;
-
-  });
-
-  items.forEach((item) => {
-
-    container.appendChild(item);
-
-  });
-
-}
-
-
-// ====================================
-// CONVERTER DATA
-// ====================================
-
-function convertDate(dateString) {
-
-  const parts =
-    dateString.split("/");
-
-  const day = parts[0];
-
-  const month = parts[1];
-
-  const year = parts[2];
-
-  return new Date(year, month - 1, day);
-
-}
-
-
-// ====================================
-// CRIAR ITEM
-// ====================================
-
-function createTaskItem(
-  container,
-  nome,
-  data
-) {
-
-  const item =
-    document.createElement("div");
-
-  item.classList.add("task-item");
-
-  item.setAttribute("data-date", data);
-
-  item.innerHTML = `
-
-    <div>
-
-      <strong>${nome}</strong>
-
-      <p>📅 ${data}</p>
-
-    </div>
-
-    <button class="delete-btn">
-      ❌
-    </button>
-
-  `;
-
-  container.appendChild(item);
-
-  sortByDate(container);
-
-  const deleteBtn =
-    item.querySelector(".delete-btn");
-
-  deleteBtn.addEventListener("click", () => {
-
-    item.remove();
-
-  });
-
-}
-
-
-// ====================================
-// PROVAS
-// ====================================
-
-addExamBtn.addEventListener("click", () => {
-
-  const nome =
-    prompt("Nome da prova:");
-
-  const data =
-    prompt("Data da prova:");
-
-  if (!nome || !data) {
-    return;
-  }
-
-  createTaskItem(
-    examList,
-    nome,
-    data
-  );
-
-});
-
-
-// ====================================
-// TRABALHOS
-// ====================================
-
-addWorkBtn.addEventListener("click", () => {
-
-  const nome =
-    prompt("Nome do trabalho:");
-
-  const data =
-    prompt("Data do trabalho:");
-
-  if (!nome || !data) {
-    return;
-  }
-
-  createTaskItem(
-    workList,
-    nome,
-    data
-  );
-
-});
-
-
-// ====================================
-// INICIAR
-// ====================================
+function renderAll(){
 
 renderSemesters();
 
 renderSubjects();
 
+renderTasks();
+
 updateGraduation();
 
 updateSemesterProgress();
+
+}
+
+renderAll();

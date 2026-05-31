@@ -1,18 +1,21 @@
 // =========================
-// PEGAR DISCIPLINA
+// DISCIPLINA
 // =========================
 
-const params =
+const params=
 new URLSearchParams(
 window.location.search
 );
 
-const subject =
-params.get("nome") || "Disciplina";
+const subject=
+params.get("nome")||
+"Disciplina";
 
 document
-.getElementById("subjectTitle")
-.innerText =
+.getElementById(
+"subjectTitle"
+)
+.innerText=
 subject;
 
 
@@ -20,43 +23,43 @@ subject;
 // ELEMENTOS
 // =========================
 
-const aulaInput =
+const aulaInput=
 document.getElementById(
 "aulaInput"
 );
 
-const atividadeInput =
+const atividadeInput=
 document.getElementById(
 "atividadeInput"
 );
 
-const aulaList =
+const aulaList=
 document.getElementById(
 "aulaList"
 );
 
-const atividadeList =
+const atividadeList=
 document.getElementById(
 "atividadeList"
 );
 
 
 // =========================
-// ABRIR DATABASE
+// DATABASE
 // =========================
 
 let db;
 
-const request =
+const request=
 indexedDB.open(
 "NurseFlowDB",
 1
 );
 
-request.onupgradeneeded =
+request.onupgradeneeded=
 (event)=>{
 
-db =
+db=
 event.target.result;
 
 if(
@@ -76,16 +79,15 @@ keyPath:"id"
 
 };
 
-request.onsuccess =
+request.onsuccess=
 (event)=>{
 
-db =
+db=
 event.target.result;
 
 loadFiles();
 
 };
-
 
 
 // =========================
@@ -97,24 +99,21 @@ file,
 type
 ){
 
-const reader =
+const reader=
 new FileReader();
 
-reader.onload =
+reader.onload=
 ()=>{
 
-const transaction =
+const tx=
 db.transaction(
 ["files"],
 "readwrite"
 );
 
-const store =
-transaction.objectStore(
+tx.objectStore(
 "files"
-);
-
-store.put({
+).put({
 
 id:
 Date.now()+
@@ -127,17 +126,16 @@ type,
 name:
 file.name,
 
+mime:
+file.type,
+
 data:
 reader.result
 
 });
 
-transaction.oncomplete=
-()=>{
-
-loadFiles();
-
-};
+tx.oncomplete=
+loadFiles;
 
 };
 
@@ -149,7 +147,7 @@ file
 
 
 // =========================
-// UPLOADS
+// UPLOAD
 // =========================
 
 aulaInput.addEventListener(
@@ -159,13 +157,18 @@ aulaInput.addEventListener(
 Array.from(
 aulaInput.files
 ).forEach(
-file=>saveFile(
+file=>
+saveFile(
 file,
 "aula"
 )
 );
 
-});
+aulaInput.value="";
+
+}
+);
+
 
 atividadeInput.addEventListener(
 "change",
@@ -174,18 +177,56 @@ atividadeInput.addEventListener(
 Array.from(
 atividadeInput.files
 ).forEach(
-file=>saveFile(
+file=>
+saveFile(
 file,
 "atividade"
 )
 );
 
-});
+atividadeInput.value="";
 
+}
+);
 
 
 // =========================
-// RENDER
+// ABRIR PDF
+// =========================
+
+function openFile(file){
+
+fetch(file.data)
+
+.then(response => response.blob())
+
+.then(blob => {
+
+const url =
+URL.createObjectURL(
+blob
+);
+
+window.open(
+url,
+"_blank"
+);
+
+setTimeout(()=>{
+
+URL.revokeObjectURL(
+url
+);
+
+},10000);
+
+});
+
+}
+
+
+// =========================
+// RENDER ITEM
 // =========================
 
 function renderItem(
@@ -193,40 +234,56 @@ file,
 container
 ){
 
-const div =
+const div=
 document.createElement(
 "div"
 );
 
-div.className =
+div.className=
 "pdf-item";
 
-div.innerHTML =
+div.innerHTML=
 
 `
 
-<a
-href="${file.data}"
-target="_blank">
+<div>
 
 📄 ${file.name}
 
-</a>
+</div>
 
-<button>
+<div>
+
+<button class="open">
+
+Abrir
+
+</button>
+
+<button class="delete">
 
 ❌
 
 </button>
 
+</div>
+
 `;
 
-const btn =
 div.querySelector(
-"button"
+".open"
+).onclick=
+()=>{
+
+openFile(
+file
 );
 
-btn.onclick=
+};
+
+div.querySelector(
+".delete"
+).onclick=
 ()=>{
 
 const tx=
@@ -237,8 +294,7 @@ db.transaction(
 
 tx.objectStore(
 "files"
-)
-.delete(
+).delete(
 file.id
 );
 
@@ -254,7 +310,6 @@ div
 }
 
 
-
 // =========================
 // CARREGAR
 // =========================
@@ -265,33 +320,34 @@ aulaList.innerHTML="";
 
 atividadeList.innerHTML="";
 
-const tx =
+const tx=
 db.transaction(
 ["files"],
 "readonly"
 );
 
-const store =
+const request=
 tx.objectStore(
 "files"
-);
-
-const request =
-store.getAll();
+).getAll();
 
 request.onsuccess=
 ()=>{
 
 request.result
+
 .filter(
 f=>
-f.subject===subject
+f.subject===
+subject
 )
+
 .forEach(
 file=>{
 
 if(
-file.type==="aula"
+file.type===
+"aula"
 ){
 
 renderItem(

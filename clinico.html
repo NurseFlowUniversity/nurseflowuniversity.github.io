@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Clínico | NurseFlow</title>
+
+  <link rel="stylesheet" href="clinico.css">
+</head>
+
+<body>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="logo">
+        <h2>NurseFlow</h2>
+      </div>
+
+      <nav>
+        <a href="index.html">🏠 Dashboard</a>
+        <a href="aps.html">📝 APS</a>
+        <a href="clinico.html" class="active">🏥 Clínico</a>
+        <a href="estagio.html">💉 Estágio</a>
+      </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+    <main class="content">
+
+      <!-- HEADER -->
+      <header class="header">
+
+        <div>
+          <h1>Clínico</h1>
+          <p>Organize casos clínicos e estudos práticos</p>
+        </div>
+
+        <button class="new-case-btn" id="openFormBtn">
+          + Novo Caso
+        </button>
+
+      </header>
+
+      <!-- FORM -->
+
+      <section class="form-section hidden" id="formSection">
+
+        <input type="text" id="paciente" placeholder="Paciente">
+
+        <input type="text" id="diagnostico" placeholder="Diagnóstico">
+
+        <textarea
+          id="sintomas"
+          placeholder="Sintomas e observações"
+        ></textarea>
+
+        <button id="addBtn">
+          Salvar Caso
+        </button>
+
+      </section>
+
+      <!-- GRID -->
+
+      <section class="cases-grid" id="casesGrid">
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="clinico.js"></script>
+
+</body>
+
+</html>

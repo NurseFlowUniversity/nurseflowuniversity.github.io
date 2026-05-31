@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>APS | NurseFlow</title>
+
+  <link rel="stylesheet" href="aps.css">
+</head>
+
+<body>
+
+  <div class="layout">
+
+```
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+  <div class="logo">
+    <h2>NurseFlow</h2>
+  </div>
+
+  <nav>
+    <a href="index.html">🏠 Dashboard</a>
+    <a href="aps.html" class="active">📝 APS</a>
+    <a href="clinico.html">🏥 Clínico</a>
+    <a href="estagio.html">💉 Estágio</a>
+  </nav>
+
+</aside>
+
+<!-- CONTEÚDO -->
+<main class="content">
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <div>
+      <h1>APS</h1>
+      <p>Atividades Práticas Supervisionadas</p>
+    </div>
+<button class="new-aps-btn" id="openFormBtn">
+  + Nova APS
+</button>
+   
+
+  </header>
+
+  <!-- CARDS -->
+ <!-- FORMULÁRIO -->
+
+<!-- BOTÃO -->
+
+
+<!-- FORMULÁRIO -->
+
+<section class="form-section hidden" id="formSection">
+
+  <input type="text" id="titulo" placeholder="Título da APS">
+
+  <input type="text" id="materia" placeholder="Matéria">
+
+  <input type="date" id="data">
+
+  <textarea
+    id="descricao"
+    placeholder="Descrição da APS"
+  ></textarea>
+
+  <button id="addBtn">
+    Adicionar APS
+  </button>
+
+</section>
+<!-- GRID -->
+
+<section class="aps-grid" id="apsGrid">
+
+</section>
+
+      <p>
+        Técnicas de avaliação clínica e exame físico.
+      </p>
+
+</main>
+```
+
+  </div>
+
+  <script src="aps.js"></script>
+
+</body>
+
+</html>

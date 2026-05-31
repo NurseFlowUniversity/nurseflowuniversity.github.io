@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Estágio | NurseFlow</title>
+
+  <link rel="stylesheet" href="estagio.css">
+</head>
+
+<body>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="logo">
+        <h2>NurseFlow</h2>
+      </div>
+
+      <nav>
+        <a href="index.html">🏠 Dashboard</a>
+        <a href="aps.html">📝 APS</a>
+        <a href="clinico.html">🏥 Clínico</a>
+        <a href="estagio.html" class="active">💉 Estágio</a>
+      </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+    <main class="content">
+
+      <!-- HEADER -->
+      <header class="header">
+
+        <div>
+          <h1>Estágio</h1>
+          <p>Controle seus campos e experiências práticas</p>
+        </div>
+
+        <button class="new-stage-btn" id="openFormBtn">
+          + Novo Registro
+        </button>
+
+      </header>
+
+      <!-- FORM -->
+
+      <section class="form-section hidden" id="formSection">
+
+        <input type="text" id="local" placeholder="Hospital ou Unidade">
+
+        <input type="text" id="setor" placeholder="Setor">
+
+        <input type="number" id="horas" placeholder="Carga horária">
+
+        <textarea
+          id="observacoes"
+          placeholder="Observações do estágio"
+        ></textarea>
+
+        <button id="addBtn">
+          Salvar Registro
+        </button>
+
+      </section>
+
+      <!-- GRID -->
+
+      <section class="stage-grid" id="stageGrid">
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="estagio.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f4f7f5;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.layout {
+  display: flex;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: white;
+  padding: 30px 20px;
+  border-right: 1px solid #e2e8f0;
+}
+
+.logo {
+  margin-bottom: 40px;
+}
+
+.logo h2 {
+  color: #15803d;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar nav a {
+  text-decoration: none;
+  color: #334155;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.sidebar nav .active {
+  background: #d7f5e4;
+  color: #166534;
+}
+
+/* CONTENT */
+
+.content {
+  width: 100%;
+  padding: 40px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 2rem;
+}
+
+/* GRID */
+
+.pdf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* COLUMN */
+
+.pdf-column {
+  background: white;
+  padding: 24px;
+  border-radius: 24px;
+
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.column-header {
+  margin-bottom: 20px;
+}
+
+.column-header h2 {
+  margin-bottom: 14px;
+}
+
+/* LIST */
+
+.pdf-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* PDF ITEM */
+
+.pdf-item {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 14px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pdf-item a {
+  text-decoration: none;
+  color: #15803d;
+  font-weight: bold;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 900px) {
+
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .pdf-grid {
+    grid-template-columns: 1fr;
+  }
+
+}

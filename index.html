@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NurseFlow</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+      <div class="logo">
+        <h2>NurseFlow</h2>
+      </div>
+
+      <nav>
+
+        <a href="index.html" class="active">
+          🏠 Dashboard
+        </a>
+
+        <a href="aps.html">
+          📝 APS
+        </a>
+
+        <a href="clinico.html">
+          🏥 Clínico
+        </a>
+
+        <a href="estagio.html">
+          💉 Estágio
+        </a>
+
+
+      </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+
+    <main class="content">
+
+      <!-- HEADER -->
+
+      <header class="header">
+
+        <div>
+          <h1>Dashboard</h1>
+          <p>Organize sua graduação 💚</p>
+        </div>
+
+      </header>
+
+      <!-- PROGRESSO -->
+
+      <section class="progress-grid">
+
+        <!-- GRADUAÇÃO -->
+
+        <div class="progress-card">
+
+          <h3>Graduação</h3>
+
+          <div class="progress-info">
+            <span id="graduationText">0%</span>
+          </div>
+
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              id="graduationBar"
+            ></div>
+          </div>
+
+        </div>
+
+        <!-- SEMESTRE -->
+
+        <div class="progress-card">
+
+          <h3 id="semesterTitle">
+            Semestre Atual
+          </h3>
+
+          <div class="progress-info">
+            <span id="semesterText">0%</span>
+          </div>
+
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              id="semesterBar"
+            ></div>
+          </div>
+
+          <!-- DATAS -->
+
+          <div class="semester-dates">
+
+            <div class="date-field">
+
+              <label>Início</label>
+
+              <input
+                type="date"
+                id="startDateInput"
+              >
+
+            </div>
+
+            <div class="date-field">
+
+              <label>Fim</label>
+
+              <input
+                type="date"
+                id="endDateInput"
+              >
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- SEMESTRES -->
+
+      <section class="semester-section">
+
+        <div class="section-header">
+
+          <h2>Semestres</h2>
+
+          <button id="addSemesterBtn">
+            + Novo Semestre
+          </button>
+
+        </div>
+
+        <div
+          class="semester-grid"
+          id="semesterGrid"
+        >
+
+        </div>
+
+      </section>
+
+      <!-- DISCIPLINAS -->
+
+      <section class="subjects-section">
+
+        <div class="section-header">
+
+          <h2>Disciplinas</h2>
+
+          <button id="addSubjectBtn">
+            + Nova Disciplina
+          </button>
+
+        </div>
+
+        <div
+          class="subjects-grid"
+          id="subjectsGrid"
+        >
+
+        </div>
+
+      </section>
+
+      <!-- PROVAS E TRABALHOS -->
+
+      <section class="tasks-grid">
+
+        <!-- PROVAS -->
+
+        <div class="task-card">
+
+          <div class="task-header">
+
+            <h2>📖 Próximas Provas</h2>
+
+            <button id="addExamBtn">
+              + Nova
+            </button>
+
+          </div>
+
+          <div id="examList"></div>
+
+        </div>
+
+        <!-- TRABALHOS -->
+
+        <div class="task-card">
+
+          <div class="task-header">
+
+            <h2>📝 Próximos Trabalhos</h2>
+
+            <button id="addWorkBtn">
+              + Novo
+            </button>
+
+          </div>
+
+          <div id="workList"></div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="style.js"></script>
+
+</body>
+
+</html>
